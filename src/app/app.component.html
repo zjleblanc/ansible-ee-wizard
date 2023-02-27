@@ -13,27 +13,25 @@
           type="text"
           [matAutocomplete]="auto"
         >
-        <mat-autocomplete #auto="matAutocomplete">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onPackageSelected($event)">
           <mat-option *ngFor="let package of packages" [value]="package">
             {{package}}
           </mat-option>
+          <mat-option *ngIf="package_show_load_more"><span (click)="onPackageLoadMore($event)">Load more...</span></mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
     </form>
+    <app-pypi-package
+      *ngFor="let packageGroup of selectedPackages.controls"
+      [packageGroup]="packageGroup"
+    ></app-pypi-package>
   </mat-step>
   <mat-step [stepControl]="secondFormGroup">
     <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Fill out your address</ng-template>
+      <ng-template matStepLabel>Galaxy Requirements (Collections)</ng-template>
       <mat-form-field>
         <input matInput placeholder="Address" formControlName="secondCtrl" required>
       </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
     </form>
   </mat-step>
   <mat-step>
