@@ -1,5 +1,7 @@
 import psycopg2
+import requests
 from flask import current_app
+from bs4 import BeautifulSoup
 
 class PYPIService(object):
   def __new__(cls):
@@ -17,7 +19,7 @@ class PYPIService(object):
     )
 
   def __del__(self):
-        self.conn.close()
+    self.conn.close()
 
   def search(self, query, limit, offset) -> list:
     cur = self.conn.cursor()
@@ -25,3 +27,13 @@ class PYPIService(object):
     rows = map(lambda row: row[0], cur.fetchall())
     cur.close()
     return list(rows)
+
+  def getVersions(self, package) -> list:
+    simple = requests.get(f"https://pypi.org/simple/{package}/")
+    links = BeautifulSoup(simple.content, "html.parser").find_all('a')
+    valid = filter(lambda link: not link.text.endswith('.whl'), links)
+    versions = map(self.__parse_version, valid)
+    return list(versions)
+
+  def __parse_version(self, link):
+     return link.text.rstrip(".tar.gz").split("-")[-1]

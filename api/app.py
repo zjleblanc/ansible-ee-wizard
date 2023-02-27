@@ -1,10 +1,10 @@
 from flask import Flask, jsonify, request
-from routes.search import search
+from routes.packages import packages
 import json
 
 app = Flask(__name__)
 app.config.from_file("config.json", load=json.load)
-app.register_blueprint(search)
+app.register_blueprint(packages)
 
 @app.route('/', methods = ['GET'])
 def home():
