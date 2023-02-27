@@ -1,0 +1,47 @@
+<h1>Angular Execution Environment Wizard</h1>
+<p>Follow the steps below to auto-generate an execution-environment.yml config</p>
+
+<mat-vertical-stepper [linear]="false" #stepper>
+  <mat-step [stepControl]="packageFormGroup">
+    <form [formGroup]="packageFormGroup">
+      <ng-template matStepLabel>Python Requirements</ng-template>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Package</mat-label>
+        <input
+          matInput
+          formControlName="packageSearch"
+          type="text"
+          [matAutocomplete]="auto"
+        >
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let package of packages" [value]="package">
+            {{package}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Fill out your address</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Address" formControlName="secondCtrl" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    You are now done.
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>
