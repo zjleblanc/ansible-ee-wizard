@@ -1,8 +1,9 @@
 import { HttpResponse } from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { debounceTime, filter, map, Subscription, tap } from 'rxjs';
+import { GalaxyService } from './services/galaxy/galaxy.service';
 import { PypiService } from './services/pypi/pypi.service';
 
 @Component({
@@ -18,24 +19,39 @@ export class AppComponent implements OnInit {
   packages: string[];
   packageSearch$: Subscription | undefined;
 
-  packageFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+  collection_query = '';
+  collections: string[];
+  collectionSearch$: Subscription | undefined;
 
-  constructor(private _formBuilder: FormBuilder, private pypi: PypiService) {}
+  packageFormGroup: FormGroup;
+  collectionFormGroup: FormGroup;
+
+  constructor(
+    private _formBuilder: FormBuilder,
+    private pypi: PypiService,
+    private galaxy: GalaxyService
+  ) {}
 
   ngOnInit() {
     this.packageFormGroup =this._formBuilder.group({
       packageSearch: [],
       packages: this._formBuilder.array([])
     });
-    this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['']
+    this.collectionFormGroup = this._formBuilder.group({
+      collectionSearch: [],
+      collections: this._formBuilder.array([])
     });
 
     this.packageSearch$ = this.packageFormGroup.get('packageSearch')?.valueChanges.pipe(
       debounceTime(500),
       filter((query: string) => query.length >= 3),
       tap((query: string) => this.searchPypi(query))
+    ).subscribe();
+
+    this.collectionSearch$ = this.collectionFormGroup.get('collectionSearch')?.valueChanges.pipe(
+      debounceTime(500),
+      filter((query: string) => query.length >= 3),
+      tap((query: string) => this.searchGalaxy(query))
     ).subscribe();
   }
 
@@ -45,6 +61,14 @@ export class AppComponent implements OnInit {
 
   get selectedPackages() {
     return this.packageFormGroup.get('packages') as FormArray<FormGroup>;
+  }
+
+  get collectionSearch() {
+    return this.collectionFormGroup.get('collectionSearch') as FormControl;
+  }
+
+  get selectedCollections() {
+    return this.collectionFormGroup.get('collections') as FormArray<FormGroup>;
   }
 
   onPackageSelected(event: MatAutocompleteSelectedEvent) {
@@ -61,6 +85,33 @@ export class AppComponent implements OnInit {
   onPackageLoadMore(event: Event) {
     event.stopImmediatePropagation();
     this.searchPypi(this.package_query);
+  }
+
+  onCollectionSelected(event: MatAutocompleteSelectedEvent) {
+    this.selectedCollections.push(this._formBuilder.group({
+      name: [event.option.value, Validators.required],
+      operator: [null, Validators.required],
+      version: [null, Validators.required]
+    }));
+
+    this.collectionSearch.setValue('');
+    this.collections = [];
+  }
+
+  private searchGalaxy(query: string) {
+    if(query == this.collection_query) {
+      return;
+    }
+
+    this.galaxy.search(query)
+      .pipe(
+        map((resp: HttpResponse<string[]>) => {
+          return resp.body ?? []
+        })
+      ).subscribe((results: string[]) => {
+        console.log(results);
+        this.collections = results;
+      })
   }
 
   private searchPypi(query: string) {
