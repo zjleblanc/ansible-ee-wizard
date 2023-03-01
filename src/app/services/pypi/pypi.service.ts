@@ -11,9 +11,15 @@ export class PypiService {
   constructor(private http: HttpClient) { }
 
   search(query: string, limit=50, offset=0): Observable<HttpResponse<string[]>> {
-    console.log(`${environment.apiBaseUrl}/search/${query}?limit=${limit}&offset=${offset}`);
     return this.http.get<string[]>(
-      `${environment.apiBaseUrl}/search/${query}?limit=${limit}&offset=${offset}`,
+      `${environment.apiBaseUrl}/packages/${query}?limit=${limit}&offset=${offset}`,
+      { observe: 'response' }
+    );
+  }
+
+  getVersions(package_name: string): Observable<HttpResponse<string[]>> {
+    return this.http.get<string[]>(
+      `${environment.apiBaseUrl}/packages/${package_name}/versions`,
       { observe: 'response' }
     );
   }

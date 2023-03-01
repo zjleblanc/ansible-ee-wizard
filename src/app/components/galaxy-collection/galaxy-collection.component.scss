@@ -1,0 +1,15 @@
+.collection-form-fields {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.operator-option ::ng-deep > span {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .op-desc {
+    transform: scale(.8);
+  }
+}

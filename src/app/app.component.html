@@ -11,30 +11,47 @@
           matInput
           formControlName="packageSearch"
           type="text"
-          [matAutocomplete]="auto"
+          [matAutocomplete]="packageAutoComplete"
         >
-        <mat-autocomplete #auto="matAutocomplete">
+        <mat-autocomplete #packageAutoComplete="matAutocomplete" (optionSelected)="onPackageSelected($event)">
           <mat-option *ngFor="let package of packages" [value]="package">
             {{package}}
           </mat-option>
+          <mat-option *ngIf="package_show_load_more"><span (click)="onPackageLoadMore($event)">Load more...</span></mat-option>
         </mat-autocomplete>
       </mat-form-field>
-      <div>
-        <button mat-button matStepperNext>Next</button>
-      </div>
     </form>
+    <app-pypi-package
+      *ngFor="let packageGroup of selectedPackages.controls"
+      [packageGroup]="packageGroup"
+    ></app-pypi-package>
   </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Fill out your address</ng-template>
-      <mat-form-field>
-        <input matInput placeholder="Address" formControlName="secondCtrl" required>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+  <mat-step [stepControl]="collectionFormGroup">
+    <form [formGroup]="collectionFormGroup">
+      <ng-template matStepLabel>Galaxy Requirements (Collections)</ng-template>
+      <div id="collection-search-container">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Collection</mat-label>
+          <input
+            matInput
+            formControlName="collectionSearch"
+            type="text"
+            [matAutocomplete]="collectionAutoComplete"
+          >
+          <mat-autocomplete #collectionAutoComplete="matAutocomplete" (optionSelected)="onCollectionSelected($event)">
+            <mat-option *ngFor="let collection of collections" [value]="collection">
+              {{collection}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-hint align="end" class="warning" *ngIf="!collections_loading && collection_query && collections.length == 0">No collections found</mat-hint>
+        </mat-form-field>
+        <mat-spinner [diameter]="20" *ngIf="collections_loading"></mat-spinner>
       </div>
     </form>
+    <app-galaxy-collection
+      *ngFor="let collectionGroup of selectedCollections.controls"
+      [collectionGroup]="collectionGroup"
+    ></app-galaxy-collection>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Done</ng-template>
