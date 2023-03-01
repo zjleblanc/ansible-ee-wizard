@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormGroup } from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
 import { map, Observable, of } from 'rxjs';
 import { IVersionOperator } from 'src/app/interfaces/version-operator.interface';
@@ -11,6 +11,8 @@ import { IVersionSource } from 'src/app/interfaces/version-source.interface';
   styleUrls: ['./version-form-group.component.scss']
 })
 export class VersionFormGroupComponent implements OnInit {
+  @Input() parentArray: FormArray<FormGroup<any>>;
+  @Input() versionIndex: number;
   @Input() versionGroup: FormGroup;
   @Input() operators: IVersionOperator[];
   @Input() versionSource: IVersionSource;

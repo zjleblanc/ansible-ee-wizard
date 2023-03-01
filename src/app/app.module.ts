@@ -10,7 +10,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatAutocompleteModule } from '@angular/material/autocomplete'
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { VersionFormGroupComponent } from './components/version-form-group/version-form-group.component';
@@ -25,6 +27,8 @@ import { VersionFormGroupComponent } from './components/version-form-group/versi
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatIconModule,
+    MatButtonModule,
     MatStepperModule,
     MatProgressSpinnerModule,
     MatSelectModule,

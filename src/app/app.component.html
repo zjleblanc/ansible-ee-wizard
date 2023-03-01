@@ -22,7 +22,9 @@
       </mat-form-field>
     </form>
     <app-version-form-group
-      *ngFor="let packageGroup of selectedPackages.controls"
+      *ngFor="let packageGroup of selectedPackages.controls; let i = index"
+      [parentArray]="selectedPackages"
+      [versionIndex]="i"
       [versionGroup]="packageGroup"
       [versionSource]="pypi"
       [operators]="pypi_operators"
@@ -51,7 +53,9 @@
       </div>
     </form>
     <app-version-form-group
-      *ngFor="let collectionGroup of selectedCollections.controls"
+      *ngFor="let collectionGroup of selectedCollections.controls; let i = index"
+      [parentArray]="selectedCollections"
+      [versionIndex]="i"
       [versionGroup]="collectionGroup"
       [versionSource]="galaxy"
       [operators]="galaxy_operators"

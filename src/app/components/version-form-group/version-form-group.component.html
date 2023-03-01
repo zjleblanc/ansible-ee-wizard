@@ -29,6 +29,16 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
+
+      <div class="action-button-wrapper">
+        <button mat-icon-button
+          color="primary"
+          aria-label="Remove entry."
+          (click)="parentArray.removeAt(versionIndex)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
     </div>
   </form>
 </div>
