@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   packageSearch$: Subscription | undefined;
 
   collection_query = '';
+  collections_loading = false;
   collections: string[];
   collectionSearch$: Subscription | undefined;
 
@@ -50,7 +51,7 @@ export class AppComponent implements OnInit {
 
     this.collectionSearch$ = this.collectionFormGroup.get('collectionSearch')?.valueChanges.pipe(
       debounceTime(500),
-      filter((query: string) => query.length >= 3),
+      filter((query: string) => query.length > 0),
       tap((query: string) => this.searchGalaxy(query))
     ).subscribe();
   }
@@ -95,6 +96,7 @@ export class AppComponent implements OnInit {
     }));
 
     this.collectionSearch.setValue('');
+    this.collection_query = '';
     this.collections = [];
   }
 
@@ -103,14 +105,24 @@ export class AppComponent implements OnInit {
       return;
     }
 
+    this.collections = [];
+    this.collections_loading = true;
+    this.collection_query = query;
     this.galaxy.search(query)
       .pipe(
         map((resp: HttpResponse<string[]>) => {
           return resp.body ?? []
         })
-      ).subscribe((results: string[]) => {
-        console.log(results);
-        this.collections = results;
+      ).subscribe({
+        next: (results: string[]) => {
+          this.collections = results;
+          this.collections_loading = false;
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.collections = [];
+          this.collections_loading = false;
+        }
       })
   }
 

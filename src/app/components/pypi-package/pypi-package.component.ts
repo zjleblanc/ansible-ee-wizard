@@ -30,10 +30,10 @@ export class PypiPackageComponent implements OnInit {
     this.pypi.getVersions(package_name)
       .subscribe((resp) => {
         this.versions = resp.body ?? [];
+        this.packageGroup.get('version')?.setValue('');
       })
 
     this.filteredVersions$ = this.packageGroup.get('version')?.valueChanges.pipe(
-      startWith(''),
       map(value => {
         if(typeof value === 'string') {
           return this.versions.filter((version) => version.includes(value));

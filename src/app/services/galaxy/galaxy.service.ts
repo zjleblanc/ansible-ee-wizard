@@ -16,4 +16,12 @@ export class GalaxyService {
       { observe: 'response' }
     );
   }
+
+  getVersions(collection_name: string): Observable<HttpResponse<string[]>> {
+    console.log(`${environment.apiBaseUrl}/collections/${collection_name}/versions`);
+    return this.http.get<string[]>(
+      `${environment.apiBaseUrl}/collections/${collection_name}/versions`,
+      { observe: 'response' }
+    );
+  }
 }

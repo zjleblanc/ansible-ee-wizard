@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,11 +14,13 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PypiPackageComponent } from './components/pypi-package/pypi-package.component';
+import { GalaxyCollectionComponent } from './components/galaxy-collection/galaxy-collection.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PypiPackageComponent
+    PypiPackageComponent,
+    GalaxyCollectionComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +28,7 @@ import { PypiPackageComponent } from './components/pypi-package/pypi-package.com
     AppRoutingModule,
     BrowserAnimationsModule,
     MatStepperModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
