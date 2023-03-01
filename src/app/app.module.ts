@@ -13,14 +13,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { PypiPackageComponent } from './components/pypi-package/pypi-package.component';
-import { GalaxyCollectionComponent } from './components/galaxy-collection/galaxy-collection.component';
+import { VersionFormGroupComponent } from './components/version-form-group/version-form-group.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PypiPackageComponent,
-    GalaxyCollectionComponent
+    VersionFormGroupComponent
   ],
   imports: [
     BrowserModule,

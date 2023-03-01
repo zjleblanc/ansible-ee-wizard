@@ -21,10 +21,12 @@
         </mat-autocomplete>
       </mat-form-field>
     </form>
-    <app-pypi-package
+    <app-version-form-group
       *ngFor="let packageGroup of selectedPackages.controls"
-      [packageGroup]="packageGroup"
-    ></app-pypi-package>
+      [versionGroup]="packageGroup"
+      [versionSource]="pypi"
+      [operators]="pypi_operators"
+    ></app-version-form-group>
   </mat-step>
   <mat-step [stepControl]="collectionFormGroup">
     <form [formGroup]="collectionFormGroup">
@@ -48,10 +50,12 @@
         <mat-spinner [diameter]="20" *ngIf="collections_loading"></mat-spinner>
       </div>
     </form>
-    <app-galaxy-collection
+    <app-version-form-group
       *ngFor="let collectionGroup of selectedCollections.controls"
-      [collectionGroup]="collectionGroup"
-    ></app-galaxy-collection>
+      [versionGroup]="collectionGroup"
+      [versionSource]="galaxy"
+      [operators]="galaxy_operators"
+    ></app-version-form-group>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Done</ng-template>

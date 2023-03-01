@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { debounceTime, filter, map, Subscription, tap } from 'rxjs';
+import { GALAXY_OPERATORS } from './constants/galaxy-operators';
+import { PEP_OPERATORS } from './constants/pep-operators';
 import { GalaxyService } from './services/galaxy/galaxy.service';
 import { PypiService } from './services/pypi/pypi.service';
 
@@ -12,6 +14,8 @@ import { PypiService } from './services/pypi/pypi.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  pypi: PypiService;
+  pypi_operators = PEP_OPERATORS;
   package_query = '';
   package_limit = 5;
   package_offset = 0;
@@ -19,6 +23,8 @@ export class AppComponent implements OnInit {
   packages: string[];
   packageSearch$: Subscription | undefined;
 
+  galaxy: GalaxyService;
+  galaxy_operators = GALAXY_OPERATORS;
   collection_query = '';
   collections_loading = false;
   collections: string[];
@@ -29,9 +35,12 @@ export class AppComponent implements OnInit {
 
   constructor(
     private _formBuilder: FormBuilder,
-    private pypi: PypiService,
-    private galaxy: GalaxyService
-  ) {}
+    _pypi: PypiService,
+    _galaxy: GalaxyService
+  ) {
+    this.pypi = _pypi;
+    this.galaxy = _galaxy;
+  }
 
   ngOnInit() {
     this.packageFormGroup =this._formBuilder.group({
