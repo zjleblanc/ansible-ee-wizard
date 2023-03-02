@@ -62,11 +62,19 @@
     ></app-version-form-group>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    You are now done.
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
+    <form [formGroup]="bindepFormGroup">
+      <ng-template matStepLabel>System Requirements</ng-template>
+      <div id="bindeps-container">
+        <mat-form-field
+          color="accent"
+          *ngFor="let control of bindeps.controls; let i = index"
+          [formControl]="control"
+          appearance="outline"
+        >
+          <input matInput [placeholder]="getBindepExample(i)">
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="onAddBindep()">Add<mat-icon>add</mat-icon></button>
+      </div>
+    </form>
   </mat-step>
 </mat-vertical-stepper>

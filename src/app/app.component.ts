@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { debounceTime, filter, map, Subscription, tap } from 'rxjs';
+import { BINDEP_EXAMPLES } from './constants/bindep-examples';
 import { GALAXY_OPERATORS } from './constants/galaxy-operators';
 import { PEP_OPERATORS } from './constants/pep-operators';
 import { GalaxyService } from './services/galaxy/galaxy.service';
@@ -30,8 +31,11 @@ export class AppComponent implements OnInit {
   collections: string[];
   collectionSearch$: Subscription | undefined;
 
+  bindepExamples = BINDEP_EXAMPLES;
+
   packageFormGroup: FormGroup;
   collectionFormGroup: FormGroup;
+  bindepFormGroup: FormGroup;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -50,6 +54,9 @@ export class AppComponent implements OnInit {
     this.collectionFormGroup = this._formBuilder.group({
       collectionSearch: [],
       collections: this._formBuilder.array([])
+    });
+    this.bindepFormGroup = this._formBuilder.group({
+      bindeps: this._formBuilder.array([])
     });
 
     this.packageSearch$ = this.packageFormGroup.get('packageSearch')?.valueChanges.pipe(
@@ -79,6 +86,21 @@ export class AppComponent implements OnInit {
 
   get selectedCollections() {
     return this.collectionFormGroup.get('collections') as FormArray<FormGroup>;
+  }
+
+  get bindeps() {
+    return this.bindepFormGroup.get('bindeps') as FormArray<FormControl>;
+  }
+
+  onAddBindep() {
+    this.bindeps.push(this._formBuilder.control({
+      dependency: ['', Validators.required]
+    }))
+  }
+
+  getBindepExample(idx: number) : string {
+    const mod = idx % this.bindepExamples.length;
+    return this.bindepExamples[mod] + "   #example";
   }
 
   onPackageSelected(event: MatAutocompleteSelectedEvent) {
