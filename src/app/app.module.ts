@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { MatSelectModule } from '@angular/material/select';
@@ -27,7 +30,10 @@ import { VersionFormGroupComponent } from './components/version-form-group/versi
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatToolbarModule,
     MatIconModule,
+    MatCardModule,
+    MatDividerModule,
     MatButtonModule,
     MatStepperModule,
     MatProgressSpinnerModule,
