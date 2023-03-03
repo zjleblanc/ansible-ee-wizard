@@ -1,6 +1,10 @@
 @use '@angular/material' as mat;
 @import '../custom-theme.scss';
 
+#container-main {
+  padding: 10px;
+}
+
 #collection-search-container {
   display: flex;
   align-items: center;
@@ -12,5 +16,34 @@
   mat-hint.warning {
     font-size: 10px;
     color: mat.get-color-from-palette($ansible-ee-wizard-primary, 500);
+  }
+}
+
+.top-p10 {
+  padding-top: 10px;
+}
+
+.card-divider {
+  margin: 16px 16px;
+}
+
+mat-toolbar {
+  svg {
+    margin-right: 10px;
+  }
+
+  &.mat-accent.color-neutral {
+    color: white;
+  }
+}
+
+#bindeps-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  mat-form-field {
+    width: -webkit-fill-available;
+    max-width: 500px;
   }
 }

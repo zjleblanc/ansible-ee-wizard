@@ -1,4 +1,6 @@
-export const PEP_OPERATORS = [
+import { IVersionOperator } from "../interfaces/version-operator.interface";
+
+export const PEP_OPERATORS : IVersionOperator[] = [
   {
     operator: "==",
     description: "exact match"
