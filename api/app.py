@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
-from routes.packages import packages
-from routes.collections import collections
+from .routes.packages import packages
+from .routes.collections import collections
 import json
 
 app = Flask(__name__)

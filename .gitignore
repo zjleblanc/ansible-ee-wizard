@@ -1,10 +1,12 @@
 seed/*.csv
 
-# See http://help.github.com/ignore-files/ for more about ignoring files.
-
+.firebase
 .venv
 .vscode
 .angular
+
+# temporary
+.github/workflows
 
 # Compiled output
 /dist

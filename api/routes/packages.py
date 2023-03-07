@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from services.pypi import PYPIService
+from ..services.pypi import PYPIService
 
 packages = Blueprint('packages', __name__)
 

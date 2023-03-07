@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from services.galaxy import GalaxyService
+from ..services.galaxy import GalaxyService
 
 collections = Blueprint('collections', __name__)
 

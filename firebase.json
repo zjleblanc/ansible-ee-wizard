@@ -1,0 +1,16 @@
+{
+  "hosting": {
+    "public": "dist/ansible-ee-wizard",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

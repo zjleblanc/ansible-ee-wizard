@@ -1,0 +1,5 @@
+{
+  "projects": {
+    "default": "ansible-ee-wizard"
+  }
+}
