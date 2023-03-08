@@ -93,9 +93,7 @@ export class AppComponent implements OnInit {
   }
 
   onAddBindep() {
-    this.bindeps.push(this._formBuilder.control({
-      dependency: ['', Validators.required]
-    }))
+    this.bindeps.push(this._formBuilder.control(''));
   }
 
   getBindepExample(idx: number) : string {
@@ -106,8 +104,8 @@ export class AppComponent implements OnInit {
   onPackageSelected(event: MatAutocompleteSelectedEvent) {
     this.selectedPackages.push(this._formBuilder.group({
       name: [event.option.value, Validators.required],
-      operator: [null, Validators.required],
-      version: [null, Validators.required]
+      operator: [null],
+      version: [null]
     }));
 
     this.packageSearch.setValue('');
@@ -122,8 +120,8 @@ export class AppComponent implements OnInit {
   onCollectionSelected(event: MatAutocompleteSelectedEvent) {
     this.selectedCollections.push(this._formBuilder.group({
       name: [event.option.value, Validators.required],
-      operator: [null, Validators.required],
-      version: [null, Validators.required]
+      operator: [null],
+      version: [null]
     }));
 
     this.collectionSearch.setValue('');

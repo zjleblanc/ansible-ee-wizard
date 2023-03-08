@@ -1,3 +1,3 @@
 export const environment = {
-  apiBaseUrl: "http://flask.autodotes.com:8000"
+  apiBaseUrl: "https://flask.autodotes.com:5000"
 };

@@ -5,91 +5,149 @@
   <span>Ansible Execution Environment Wizard</span>
 </mat-toolbar>
 
-<div id="container-main">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-subtitle>Follow the steps below to define your execution environment requirements and auto-generate the files needed for ansible-builder</mat-card-subtitle>
-    </mat-card-header>
-    <mat-divider class="card-divider"></mat-divider>
-    <mat-card-content>
-      <mat-vertical-stepper [linear]="false" #stepper>
-        <mat-step [stepControl]="packageFormGroup">
-          <form [formGroup]="packageFormGroup" class="top-p10">
-            <ng-template matStepLabel>Python Requirements</ng-template>
-            <mat-form-field class="example-full-width" appearance="fill">
-              <mat-label>Package</mat-label>
-              <input
-                matInput
-                formControlName="packageSearch"
-                type="text"
-                [matAutocomplete]="packageAutoComplete"
-              >
-              <mat-autocomplete #packageAutoComplete="matAutocomplete" (optionSelected)="onPackageSelected($event)">
-                <mat-option *ngFor="let package of packages" [value]="package">
-                  {{package}}
-                </mat-option>
-                <mat-option *ngIf="package_show_load_more"><span (click)="onPackageLoadMore($event)">Load more...</span></mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          </form>
-          <app-version-form-group
-            *ngFor="let packageGroup of selectedPackages.controls; let i = index"
-            [parentArray]="selectedPackages"
-            [versionIndex]="i"
-            [versionGroup]="packageGroup"
-            [versionSource]="pypi"
-            [operators]="pypi_operators"
-          ></app-version-form-group>
-        </mat-step>
-        <mat-step [stepControl]="collectionFormGroup">
-          <form [formGroup]="collectionFormGroup" class="top-p10">
-            <ng-template matStepLabel>Galaxy Requirements (Collections)</ng-template>
-            <div id="collection-search-container">
-              <mat-form-field class="example-full-width" appearance="fill">
-                <mat-label>Collection</mat-label>
-                <input
-                  matInput
-                  formControlName="collectionSearch"
-                  type="text"
-                  [matAutocomplete]="collectionAutoComplete"
-                >
-                <mat-autocomplete #collectionAutoComplete="matAutocomplete" (optionSelected)="onCollectionSelected($event)">
-                  <mat-option *ngFor="let collection of collections" [value]="collection">
-                    {{collection}}
-                  </mat-option>
-                </mat-autocomplete>
-                <mat-hint align="end" class="warning" *ngIf="!collections_loading && collection_query && collections.length == 0">No collections found</mat-hint>
-              </mat-form-field>
-              <mat-spinner [diameter]="20" *ngIf="collections_loading"></mat-spinner>
-            </div>
-          </form>
-          <app-version-form-group
-            *ngFor="let collectionGroup of selectedCollections.controls; let i = index"
-            [parentArray]="selectedCollections"
-            [versionIndex]="i"
-            [versionGroup]="collectionGroup"
-            [versionSource]="galaxy"
-            [operators]="galaxy_operators"
-          ></app-version-form-group>
-        </mat-step>
-        <mat-step>
-          <form [formGroup]="bindepFormGroup" class="top-p10">
-            <ng-template matStepLabel>System Requirements</ng-template>
-            <div id="bindeps-container">
-              <mat-form-field
-                color="accent"
-                *ngFor="let control of bindeps.controls; let i = index"
-                [formControl]="control"
-                appearance="outline"
-              >
-                <input matInput [placeholder]="getBindepExample(i)">
-              </mat-form-field>
-              <button mat-raised-button color="primary" (click)="onAddBindep()">Add<mat-icon>add</mat-icon></button>
-            </div>
-          </form>
-        </mat-step>
-      </mat-vertical-stepper>
-    </mat-card-content>
-  </mat-card>
-
+<div class="container-main px-2">
+  <!-- BEGIN MAIN ROW -->
+  <div class="row gx-2">
+    <!-- BEGIN FORM COLUMN -->
+    <div id="container-form" class="col-xs-12 col-lg-6 p-2">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-subtitle>Follow the steps below to define your execution environment requirements and auto-generate the files needed for ansible-builder</mat-card-subtitle>
+        </mat-card-header>
+        <mat-divider class="card-divider"></mat-divider>
+        <mat-card-content>
+          <mat-vertical-stepper [linear]="false" #stepper>
+            <mat-step [stepControl]="packageFormGroup">
+              <form [formGroup]="packageFormGroup" class="top-p10">
+                <ng-template matStepLabel>Python Requirements</ng-template>
+                <mat-form-field class="example-full-width" appearance="fill">
+                  <mat-label>Package</mat-label>
+                  <input
+                    matInput
+                    formControlName="packageSearch"
+                    type="text"
+                    [matAutocomplete]="packageAutoComplete"
+                  >
+                  <mat-autocomplete #packageAutoComplete="matAutocomplete" (optionSelected)="onPackageSelected($event)">
+                    <mat-option *ngFor="let package of packages" [value]="package">
+                      {{package}}
+                    </mat-option>
+                    <mat-option *ngIf="package_show_load_more"><span (click)="onPackageLoadMore($event)">Load more...</span></mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </form>
+              <app-version-form-group
+                *ngFor="let packageGroup of selectedPackages.controls; let i = index"
+                [parentArray]="selectedPackages"
+                [versionIndex]="i"
+                [versionGroup]="packageGroup"
+                [versionSource]="pypi"
+                [operators]="pypi_operators"
+              ></app-version-form-group>
+            </mat-step>
+            <mat-step [stepControl]="collectionFormGroup">
+              <form [formGroup]="collectionFormGroup" class="top-p10">
+                <ng-template matStepLabel>Galaxy Requirements (Collections)</ng-template>
+                <div id="collection-search-container">
+                  <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>Collection</mat-label>
+                    <input
+                      matInput
+                      formControlName="collectionSearch"
+                      type="text"
+                      [matAutocomplete]="collectionAutoComplete"
+                    >
+                    <mat-autocomplete #collectionAutoComplete="matAutocomplete" (optionSelected)="onCollectionSelected($event)">
+                      <mat-option *ngFor="let collection of collections" [value]="collection">
+                        {{collection}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-hint align="end" class="warning" *ngIf="!collections_loading && collection_query && collections.length == 0">No collections found</mat-hint>
+                  </mat-form-field>
+                  <mat-spinner [diameter]="20" *ngIf="collections_loading"></mat-spinner>
+                </div>
+              </form>
+              <app-version-form-group
+                *ngFor="let collectionGroup of selectedCollections.controls; let i = index"
+                [parentArray]="selectedCollections"
+                [versionIndex]="i"
+                [versionGroup]="collectionGroup"
+                [versionSource]="galaxy"
+                [operators]="galaxy_operators"
+              ></app-version-form-group>
+            </mat-step>
+            <mat-step>
+              <form [formGroup]="bindepFormGroup" class="top-p10">
+                <ng-template matStepLabel>System Requirements</ng-template>
+                <div id="bindeps-container">
+                  <div class="bindep-entry" *ngFor="let control of bindeps.controls; let i = index">
+                    <mat-form-field
+                      color="accent"
+                      appearance="outline"
+                    >
+                      <input matInput [placeholder]="getBindepExample(i)" [formControl]="control">
+                    </mat-form-field>
+                    <div class="action-button-wrapper">
+                      <button mat-icon-button
+                        color="primary"
+                        aria-label="Remove bindep."
+                        (click)="bindeps.removeAt(i)"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <button mat-raised-button color="primary" (click)="onAddBindep()">Add<mat-icon>add</mat-icon></button>
+                </div>
+              </form>
+            </mat-step>
+          </mat-vertical-stepper>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <!-- END FORM COLUMN -->
+    <div id="container-preview" class="col-xs-12 col-md-6 p-2">
+      <mat-card>
+        <mat-card-header class="header-file-preview">
+          <mat-card-subtitle>execution-environment.yml</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <app-ee-config-preview
+            [packages]="selectedPackages"
+            [collections]="selectedCollections"
+            [bindeps]="bindeps"
+          >
+          </app-ee-config-preview>
+        </mat-card-content>
+      </mat-card>
+      <mat-card *ngIf="selectedPackages.length > 0">
+        <mat-card-header class="header-file-preview">
+          <mat-card-subtitle>requirements.txt</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <app-ee-packages-preview [packages]="selectedPackages">
+          </app-ee-packages-preview>
+        </mat-card-content>
+      </mat-card>
+      <mat-card *ngIf="selectedCollections.length > 0">
+        <mat-card-header class="header-file-preview">
+          <mat-card-subtitle>requirements.yml</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <app-ee-collections-preview [collections]="selectedCollections">
+          </app-ee-collections-preview>
+        </mat-card-content>
+      </mat-card>
+      <mat-card *ngIf="bindeps.length > 0">
+        <mat-card-header class="header-file-preview">
+          <mat-card-subtitle>bindep.txt</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <app-ee-bindeps-preview [dependencies]="bindeps">
+          </app-ee-bindeps-preview>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  <!-- END MAIN ROW -->
 </div>

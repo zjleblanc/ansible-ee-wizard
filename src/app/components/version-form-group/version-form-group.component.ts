@@ -32,6 +32,7 @@ export class VersionFormGroupComponent implements OnInit {
       .subscribe((resp) => {
         this.versions = resp.body ?? [];
         this.versionGroup.get('version')?.setValue('');
+        this.versionGroup.get('version')?.markAsUntouched();
       })
 
     this.filteredVersions$ = this.versionGroup.get('version')?.valueChanges.pipe(
