@@ -6,9 +6,7 @@ import { debounceTime, filter, map, Subscription, tap } from 'rxjs';
 import { BINDEP_EXAMPLES } from './constants/bindep-examples';
 import { PREPEND_EXAMPLES, APPEND_EXAMPLES } from './constants/add-step-examples';
 import { GALAXY_OPERATORS } from './constants/galaxy-operators';
-import { PEP_OPERATORS } from './constants/pep-operators';
 import { GalaxyService } from './services/galaxy/galaxy.service';
-import { PypiService } from './services/pypi/pypi.service';
 
 @Component({
   selector: 'app-root',
@@ -16,15 +14,6 @@ import { PypiService } from './services/pypi/pypi.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  pypi: PypiService;
-  pypi_operators = PEP_OPERATORS;
-  package_query = '';
-  package_limit = 5;
-  package_offset = 0;
-  package_show_load_more = false;
-  packages: string[];
-  packageSearch$: Subscription | undefined;
-
   galaxy: GalaxyService;
   galaxy_operators = GALAXY_OPERATORS;
   collection_query = '';
@@ -32,32 +21,20 @@ export class AppComponent implements OnInit {
   collections: string[];
   collectionSearch$: Subscription | undefined;
 
-  basicsFormGroup: FormGroup;
-  addStepsFormGroup: FormGroup;
-  packageFormGroup: FormGroup;
-  collectionFormGroup: FormGroup;
-  bindepFormGroup: FormGroup;
+  basicsFormGroup: FormGroup = new FormGroup([]);
+  addStepsFormGroup: FormGroup = new FormGroup([]);
+  packageFormGroup: FormGroup = new FormGroup([]);
+  collectionFormGroup: FormGroup = new FormGroup([]);
+  bindepFormGroup: FormGroup = new FormGroup([]);
 
   constructor(
     private _formBuilder: FormBuilder,
-    _pypi: PypiService,
     _galaxy: GalaxyService
   ) {
-    this.pypi = _pypi;
     this.galaxy = _galaxy;
   }
 
   ngOnInit() {
-    this.basicsFormGroup = this._formBuilder.group({
-      version: ['1', Validators.required],
-      base_image: ['quay.io/ansible/ansible-runner:latest', Validators.required],
-      builder_image: [null],
-      ansible_cfg: ["ansible.cfg"]
-    });
-    this.packageFormGroup = this._formBuilder.group({
-      packageSearch: [],
-      packages: this._formBuilder.array([])
-    });
     this.collectionFormGroup = this._formBuilder.group({
       collectionSearch: [],
       collections: this._formBuilder.array([])
@@ -70,12 +47,6 @@ export class AppComponent implements OnInit {
       append: this._formBuilder.array([])
     });
 
-    this.packageSearch$ = this.packageFormGroup.get('packageSearch')?.valueChanges.pipe(
-      debounceTime(500),
-      filter((query: string) => query.length >= 3),
-      tap((query: string) => this.searchPypi(query))
-    ).subscribe();
-
     this.collectionSearch$ = this.collectionFormGroup.get('collectionSearch')?.valueChanges.pipe(
       debounceTime(500),
       filter((query: string) => query.length > 0),
@@ -83,12 +54,11 @@ export class AppComponent implements OnInit {
     ).subscribe();
   }
 
-  get packageSearch() {
-    return this.packageFormGroup.get('packageSearch') as FormControl;
-  }
-
   get selectedPackages() {
-    return this.packageFormGroup.get('packages') as FormArray<FormGroup>;
+    if(this.packageFormGroup.get('packages')) {
+      return this.packageFormGroup.get('packages') as FormArray<FormGroup>;
+    }
+    return new FormArray<FormGroup>([]);
   }
 
   get collectionSearch() {
@@ -133,22 +103,6 @@ export class AppComponent implements OnInit {
       return APPEND_EXAMPLES[mod];
   }
 
-  onPackageSelected(event: MatAutocompleteSelectedEvent) {
-    this.selectedPackages.push(this._formBuilder.group({
-      name: [event.option.value, Validators.required],
-      operator: [null],
-      version: [null]
-    }));
-
-    this.packageSearch.setValue('');
-    this.packages = [];
-  }
-
-  onPackageLoadMore(event: Event) {
-    event.stopImmediatePropagation();
-    this.searchPypi(this.package_query);
-  }
-
   onCollectionSelected(event: MatAutocompleteSelectedEvent) {
     this.selectedCollections.push(this._formBuilder.group({
       name: [event.option.value, Validators.required],
@@ -185,30 +139,5 @@ export class AppComponent implements OnInit {
           this.collections_loading = false;
         }
       })
-  }
-
-  private searchPypi(query: string) {
-    let newQuery = query != this.package_query;
-    if(newQuery) {
-      this.package_offset = 0;
-      this.package_query = query;
-    }
-
-    this.pypi.search(query, this.package_limit, this.package_offset)
-      .pipe(
-        map((resp: HttpResponse<string[]>) => resp.body ?? [])
-      ).subscribe(
-        (packages: string[]) => {
-          if(newQuery) {
-            this.packages = packages;
-            this.package_offset = this.package_limit;
-          }
-          else {
-            this.packages = this.packages.concat(packages);
-            this.package_offset += packages.length;
-          }
-          this.package_show_load_more = packages.length == this.package_limit;
-        }
-      );
   }
 }

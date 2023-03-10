@@ -26,6 +26,8 @@ import { EEPackagesPreviewComponent } from './components/ee-packages-preview/ee-
 import { EECollectionsPreviewComponent } from './components/ee-collections-preview/ee-collections-preview.component';
 import { EEBindepsPreviewComponent } from './components/ee-bindeps-preview/ee-bindeps-preview.component';
 import { EeTooltipPopoverComponent } from './components/ee-tooltip-popover/ee-tooltip-popover.component';
+import { EEWizardBasicStepComponent } from './components/ee-wizard-basic-step/ee-wizard-basic-step.component';
+import { EEWizardPackagesStepComponent } from './components/ee-wizard-packages-step/ee-wizard-packages-step.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { EeTooltipPopoverComponent } from './components/ee-tooltip-popover/ee-to
     EEPackagesPreviewComponent,
     EECollectionsPreviewComponent,
     EEBindepsPreviewComponent,
-    EeTooltipPopoverComponent
+    EeTooltipPopoverComponent,
+    EEWizardBasicStepComponent,
+    EEWizardPackagesStepComponent
   ],
   imports: [
     BrowserModule,

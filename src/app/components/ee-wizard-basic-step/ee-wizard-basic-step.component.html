@@ -1,0 +1,39 @@
+
+<form [formGroup]="basicsFormGroup" class="top-p10">
+  <div id="basic-setup-container">
+    <mat-form-field class="with-hint" appearance="outline" hideRequiredMarker>
+      <mat-label>Version</mat-label>
+      <input
+        matInput
+        formControlName="version"
+        type="text"
+      >
+      <mat-hint>Likely no need to modify</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline" hideRequiredMarker>
+      <mat-label>Base Image</mat-label>
+      <input
+        matInput
+        formControlName="base_image"
+        type="text"
+      >
+    </mat-form-field>
+    <mat-form-field class="with-hint" appearance="outline">
+      <mat-label>Builder Image</mat-label>
+      <input
+        matInput
+        formControlName="builder_image"
+        type="text"
+      >
+      <mat-hint>Optional</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Ansible Config</mat-label>
+      <input
+        matInput
+        formControlName="ansible_cfg"
+        type="text"
+      >
+    </mat-form-field>
+  </div>
+</form>

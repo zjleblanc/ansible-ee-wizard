@@ -1,0 +1,25 @@
+<form [formGroup]="packagesFormGroup" class="top-p10">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Package</mat-label>
+    <input
+      matInput
+      type="text"
+      [matAutocomplete]="packageAutoComplete"
+      formControlName="packageSearch"
+    >
+    <mat-autocomplete #packageAutoComplete="matAutocomplete" (optionSelected)="onPackageSelected($event)">
+      <mat-option *ngFor="let package of packages" [value]="package">
+        {{package}}
+      </mat-option>
+      <mat-option *ngIf="package_show_load_more"><span (click)="onPackageLoadMore($event)">Load more...</span></mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+<app-version-form-group
+  *ngFor="let packageGroup of selectedPackages.controls; let i = index"
+  [parentArray]="selectedPackages"
+  [versionIndex]="i"
+  [versionGroup]="packageGroup"
+  [versionSource]="pypi"
+  [operators]="pypi_operators"
+></app-version-form-group>

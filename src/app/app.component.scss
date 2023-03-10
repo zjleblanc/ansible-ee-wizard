@@ -24,20 +24,6 @@
   }
 }
 
-#basic-setup-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  mat-form-field {
-    max-width: 500px;
-
-    &.with-hint {
-      margin-bottom: 12px;
-    }
-  }
-}
-
 #collection-search-container {
   display: flex;
   align-items: center;

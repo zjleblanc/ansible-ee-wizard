@@ -18,73 +18,12 @@
         <mat-card-content>
           <mat-vertical-stepper [linear]="false" #stepper>
             <mat-step [stepControl]="basicsFormGroup">
-              <form [formGroup]="basicsFormGroup" class="top-p10">
-                <ng-template matStepLabel>Basic Setup</ng-template>
-                <div id="basic-setup-container">
-                  <mat-form-field class="with-hint" appearance="outline" hideRequiredMarker>
-                    <mat-label>Version</mat-label>
-                    <input
-                      matInput
-                      formControlName="version"
-                      type="text"
-                    >
-                    <mat-hint>Likely no need to modify</mat-hint>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline" hideRequiredMarker>
-                    <mat-label>Base Image</mat-label>
-                    <input
-                      matInput
-                      formControlName="base_image"
-                      type="text"
-                    >
-                  </mat-form-field>
-                  <mat-form-field class="with-hint" appearance="outline">
-                    <mat-label>Builder Image</mat-label>
-                    <input
-                      matInput
-                      formControlName="builder_image"
-                      type="text"
-                    >
-                    <mat-hint>Optional</mat-hint>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Ansible Config</mat-label>
-                    <input
-                      matInput
-                      formControlName="ansible_cfg"
-                      type="text"
-                    >
-                  </mat-form-field>
-              </div>
-              </form>
+              <ng-template matStepLabel>Basic Setup</ng-template>
+              <app-ee-wizard-basic-step [(basicsFormGroup)]="basicsFormGroup"></app-ee-wizard-basic-step>
             </mat-step>
             <mat-step [stepControl]="packageFormGroup">
-              <form [formGroup]="packageFormGroup" class="top-p10">
-                <ng-template matStepLabel>Python Requirements</ng-template>
-                <mat-form-field class="example-full-width" appearance="fill">
-                  <mat-label>Package</mat-label>
-                  <input
-                    matInput
-                    formControlName="packageSearch"
-                    type="text"
-                    [matAutocomplete]="packageAutoComplete"
-                  >
-                  <mat-autocomplete #packageAutoComplete="matAutocomplete" (optionSelected)="onPackageSelected($event)">
-                    <mat-option *ngFor="let package of packages" [value]="package">
-                      {{package}}
-                    </mat-option>
-                    <mat-option *ngIf="package_show_load_more"><span (click)="onPackageLoadMore($event)">Load more...</span></mat-option>
-                  </mat-autocomplete>
-                </mat-form-field>
-              </form>
-              <app-version-form-group
-                *ngFor="let packageGroup of selectedPackages.controls; let i = index"
-                [parentArray]="selectedPackages"
-                [versionIndex]="i"
-                [versionGroup]="packageGroup"
-                [versionSource]="pypi"
-                [operators]="pypi_operators"
-              ></app-version-form-group>
+              <ng-template matStepLabel>Python Requirements</ng-template>
+              <app-ee-wizard-packages-step [(packagesFormGroup)]="packageFormGroup"></app-ee-wizard-packages-step>
             </mat-step>
             <mat-step [stepControl]="collectionFormGroup">
               <form [formGroup]="collectionFormGroup" class="top-p10">
@@ -217,7 +156,7 @@
           </app-ee-config-preview>
         </mat-card-content>
       </mat-card>
-      <mat-card *ngIf="selectedPackages.length > 0">
+      <mat-card *ngIf="selectedPackages && selectedPackages.length > 0">
         <mat-card-header class="header-file-preview">
           <mat-card-subtitle>requirements.txt</mat-card-subtitle>
         </mat-card-header>
