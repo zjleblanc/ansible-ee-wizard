@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@import 'custom-theme.scss';
+
+a {
+  color: mat.get-color-from-palette($ansible-ee-wizard-accent, 700);
+}
+
+mat-hint {
+  font-size: 12px;
+  opacity: .6;
+}

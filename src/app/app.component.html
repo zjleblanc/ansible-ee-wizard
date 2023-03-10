@@ -17,6 +17,47 @@
         <mat-divider class="card-divider"></mat-divider>
         <mat-card-content>
           <mat-vertical-stepper [linear]="false" #stepper>
+            <mat-step [stepControl]="basicsFormGroup">
+              <form [formGroup]="basicsFormGroup" class="top-p10">
+                <ng-template matStepLabel>Basic Setup</ng-template>
+                <div id="basic-setup-container">
+                  <mat-form-field class="with-hint" appearance="outline" hideRequiredMarker>
+                    <mat-label>Version</mat-label>
+                    <input
+                      matInput
+                      formControlName="version"
+                      type="text"
+                    >
+                    <mat-hint>Likely no need to modify</mat-hint>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" hideRequiredMarker>
+                    <mat-label>Base Image</mat-label>
+                    <input
+                      matInput
+                      formControlName="base_image"
+                      type="text"
+                    >
+                  </mat-form-field>
+                  <mat-form-field class="with-hint" appearance="outline">
+                    <mat-label>Builder Image</mat-label>
+                    <input
+                      matInput
+                      formControlName="builder_image"
+                      type="text"
+                    >
+                    <mat-hint>Optional</mat-hint>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Ansible Config</mat-label>
+                    <input
+                      matInput
+                      formControlName="ansible_cfg"
+                      type="text"
+                    >
+                  </mat-form-field>
+              </div>
+              </form>
+            </mat-step>
             <mat-step [stepControl]="packageFormGroup">
               <form [formGroup]="packageFormGroup" class="top-p10">
                 <ng-template matStepLabel>Python Requirements</ng-template>
@@ -101,6 +142,56 @@
                 </div>
               </form>
             </mat-step>
+            <mat-step [stepControl]="addStepsFormGroup">
+              <form [formGroup]="addStepsFormGroup" class="top-p10">
+                <ng-template matStepLabel>Additional Build Steps</ng-template>
+                <div id="add-steps-container">
+                  <div class="prepend-entry" *ngFor="let control of prependSteps.controls; let i = index">
+                    <mat-form-field
+                      color="accent"
+                      appearance="outline"
+                    >
+                      <input matInput
+                        [formControl]="control"
+                        [placeholder]="getStepExample(i, 'prepend')"
+                      >
+                    </mat-form-field>
+                    <div class="action-button-wrapper">
+                      <button mat-icon-button
+                        color="primary"
+                        aria-label="Remove prepend step."
+                        (click)="prependSteps.removeAt(i)"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <button mat-raised-button color="primary" (click)="onAddStep(prependSteps)">Prepend Step<mat-icon>add</mat-icon></button>
+                  <hr style="width: 100%">
+                  <div class="append-entry" *ngFor="let control of appendSteps.controls; let i = index">
+                    <mat-form-field
+                      color="accent"
+                      appearance="outline"
+                    >
+                      <input matInput
+                        [formControl]="control"
+                        [placeholder]="getStepExample(i, 'append')"
+                      >
+                    </mat-form-field>
+                    <div class="action-button-wrapper">
+                      <button mat-icon-button
+                        color="primary"
+                        aria-label="Remove append step."
+                        (click)="appendSteps.removeAt(i)"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                  <button mat-raised-button color="primary" (click)="onAddStep(appendSteps)">Append Step<mat-icon>add</mat-icon></button>
+                </div>
+              </form>
+            </mat-step>
           </mat-vertical-stepper>
         </mat-card-content>
       </mat-card>
@@ -116,9 +207,12 @@
         </mat-card-header>
         <mat-card-content>
           <app-ee-config-preview
+            [basics]="basicsFormGroup"
             [packages]="selectedPackages"
             [collections]="selectedCollections"
             [bindeps]="bindeps"
+            [prependSteps]="prependSteps"
+            [appendSteps]="appendSteps"
           >
           </app-ee-config-preview>
         </mat-card-content>

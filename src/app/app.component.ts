@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { debounceTime, filter, map, Subscription, tap } from 'rxjs';
 import { BINDEP_EXAMPLES } from './constants/bindep-examples';
+import { PREPEND_EXAMPLES, APPEND_EXAMPLES } from './constants/add-step-examples';
 import { GALAXY_OPERATORS } from './constants/galaxy-operators';
 import { PEP_OPERATORS } from './constants/pep-operators';
 import { GalaxyService } from './services/galaxy/galaxy.service';
@@ -31,8 +32,8 @@ export class AppComponent implements OnInit {
   collections: string[];
   collectionSearch$: Subscription | undefined;
 
-  bindepExamples = BINDEP_EXAMPLES;
-
+  basicsFormGroup: FormGroup;
+  addStepsFormGroup: FormGroup;
   packageFormGroup: FormGroup;
   collectionFormGroup: FormGroup;
   bindepFormGroup: FormGroup;
@@ -47,7 +48,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.packageFormGroup =this._formBuilder.group({
+    this.basicsFormGroup = this._formBuilder.group({
+      version: ['1', Validators.required],
+      base_image: ['quay.io/ansible/ansible-runner:latest', Validators.required],
+      builder_image: [null],
+      ansible_cfg: ["ansible.cfg"]
+    });
+    this.packageFormGroup = this._formBuilder.group({
       packageSearch: [],
       packages: this._formBuilder.array([])
     });
@@ -57,6 +64,10 @@ export class AppComponent implements OnInit {
     });
     this.bindepFormGroup = this._formBuilder.group({
       bindeps: this._formBuilder.array([])
+    });
+    this.addStepsFormGroup = this._formBuilder.group({
+      prepend: this._formBuilder.array([]),
+      append: this._formBuilder.array([])
     });
 
     this.packageSearch$ = this.packageFormGroup.get('packageSearch')?.valueChanges.pipe(
@@ -92,13 +103,34 @@ export class AppComponent implements OnInit {
     return this.bindepFormGroup.get('bindeps') as FormArray<FormControl>;
   }
 
+  get prependSteps() {
+    return this.addStepsFormGroup.get('prepend') as FormArray<FormControl>;
+  }
+
+  get appendSteps() {
+    return this.addStepsFormGroup.get('append') as FormArray<FormControl>;
+  }
+
   onAddBindep() {
     this.bindeps.push(this._formBuilder.control(''));
   }
 
   getBindepExample(idx: number) : string {
-    const mod = idx % this.bindepExamples.length;
-    return this.bindepExamples[mod] + "   #example";
+    const mod = idx % BINDEP_EXAMPLES.length;
+    return BINDEP_EXAMPLES[mod] + "   #example";
+  }
+
+  onAddStep(arr: FormArray<FormControl>) {
+    arr.push(this._formBuilder.control(''));
+  }
+
+  getStepExample(idx: number, type: string) : string {
+    if(type == "prepend") {
+      let mod = idx % PREPEND_EXAMPLES.length;
+      return PREPEND_EXAMPLES[mod];
+    }
+    let mod = idx % APPEND_EXAMPLES.length;
+      return APPEND_EXAMPLES[mod];
   }
 
   onPackageSelected(event: MatAutocompleteSelectedEvent) {
