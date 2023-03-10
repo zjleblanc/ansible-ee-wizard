@@ -1,0 +1,19 @@
+<div class="tooltip-button-wrapper">
+  <button class="info" cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="visible = !visible" mat-icon-button>
+    <mat-icon>info</mat-icon>
+  </button>
+</div>
+
+<!-- This template displays the overlay content and is connected to the button -->
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="visible"
+>
+  <mat-card class="overlay-container">
+    <mat-card-content>
+      See more details about the config file
+      <a [href]="link" target="_blank"><mat-icon>open_in_new</mat-icon></a>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

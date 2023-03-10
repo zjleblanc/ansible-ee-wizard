@@ -1,0 +1,22 @@
+div.tooltip-button-wrapper {
+  height: 24px;
+  display: inline-block;
+}
+
+.overlay-container {
+  .mat-icon {
+    vertical-align: middle;
+    transform: scale(.8);
+  }
+}
+
+button.info {
+  padding: 0;
+  height: 28px;
+  width: 28px;
+  vertical-align: middle;
+
+  .mat-icon {
+    transform: scale(.8);
+  }
+}

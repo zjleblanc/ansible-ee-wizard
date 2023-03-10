@@ -109,7 +109,10 @@
     <div id="container-previews" class="col-xs-12 col-md-6 p-2">
       <mat-card>
         <mat-card-header class="header-file-preview">
-          <mat-card-subtitle>execution-environment.yml</mat-card-subtitle>
+          <mat-card-subtitle>
+            <app-ee-tooltip-popover link="https://ansible-builder.readthedocs.io/en/stable/definition/"></app-ee-tooltip-popover>
+            <span>execution-environment.yml</span>
+          </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <app-ee-config-preview

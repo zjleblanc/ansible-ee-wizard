@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { OverlayModule } from '@angular/cdk/overlay';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatToolbarModule } from '@angular/material/toolbar'
@@ -24,6 +25,7 @@ import { EEConfigPreviewComponent } from './components/ee-config-preview/ee-conf
 import { EEPackagesPreviewComponent } from './components/ee-packages-preview/ee-packages-preview.component';
 import { EECollectionsPreviewComponent } from './components/ee-collections-preview/ee-collections-preview.component';
 import { EEBindepsPreviewComponent } from './components/ee-bindeps-preview/ee-bindeps-preview.component';
+import { EeTooltipPopoverComponent } from './components/ee-tooltip-popover/ee-tooltip-popover.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { EEBindepsPreviewComponent } from './components/ee-bindeps-preview/ee-bi
     EEConfigPreviewComponent,
     EEPackagesPreviewComponent,
     EECollectionsPreviewComponent,
-    EEBindepsPreviewComponent
+    EEBindepsPreviewComponent,
+    EeTooltipPopoverComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +54,8 @@ import { EEBindepsPreviewComponent } from './components/ee-bindeps-preview/ee-bi
     MatFormFieldModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    HighlightModule
+    HighlightModule,
+    OverlayModule
   ],
   providers: [
     {
