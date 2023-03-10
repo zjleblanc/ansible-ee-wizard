@@ -14,25 +14,13 @@ import { GalaxyService } from './services/galaxy/galaxy.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  galaxy: GalaxyService;
-  galaxy_operators = GALAXY_OPERATORS;
-  collection_query = '';
-  collections_loading = false;
-  collections: string[];
-  collectionSearch$: Subscription | undefined;
-
   basicsFormGroup: FormGroup = new FormGroup([]);
   addStepsFormGroup: FormGroup = new FormGroup([]);
   packageFormGroup: FormGroup = new FormGroup([]);
   collectionFormGroup: FormGroup = new FormGroup([]);
   bindepFormGroup: FormGroup = new FormGroup([]);
 
-  constructor(
-    private _formBuilder: FormBuilder,
-    _galaxy: GalaxyService
-  ) {
-    this.galaxy = _galaxy;
-  }
+  constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.bindepFormGroup = this._formBuilder.group({
