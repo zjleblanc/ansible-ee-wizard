@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Form, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { debounceTime, filter, map, Subscription, tap } from 'rxjs';
 import { BINDEP_EXAMPLES } from './constants/bindep-examples';
@@ -18,14 +18,12 @@ export class AppComponent implements OnInit {
   addStepsFormGroup: FormGroup = new FormGroup([]);
   packageFormGroup: FormGroup = new FormGroup([]);
   collectionFormGroup: FormGroup = new FormGroup([]);
-  bindepFormGroup: FormGroup = new FormGroup([]);
+  bindepFormArray: FormArray<FormControl> = new FormArray<FormControl>([]);
 
   constructor(private _formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.bindepFormGroup = this._formBuilder.group({
-      bindeps: this._formBuilder.array([])
-    });
+    this.bindepFormArray = this._formBuilder.array([]);
     this.addStepsFormGroup = this._formBuilder.group({
       prepend: this._formBuilder.array([]),
       append: this._formBuilder.array([])
@@ -46,25 +44,12 @@ export class AppComponent implements OnInit {
     return new FormArray<FormGroup>([]);
   }
 
-  get bindeps() {
-    return this.bindepFormGroup.get('bindeps') as FormArray<FormControl>;
-  }
-
   get prependSteps() {
     return this.addStepsFormGroup.get('prepend') as FormArray<FormControl>;
   }
 
   get appendSteps() {
     return this.addStepsFormGroup.get('append') as FormArray<FormControl>;
-  }
-
-  onAddBindep() {
-    this.bindeps.push(this._formBuilder.control(''));
-  }
-
-  getBindepExample(idx: number) : string {
-    const mod = idx % BINDEP_EXAMPLES.length;
-    return BINDEP_EXAMPLES[mod] + "   #example";
   }
 
   onAddStep(arr: FormArray<FormControl>) {
