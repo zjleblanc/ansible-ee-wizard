@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+@import '../../../custom-theme.scss';
+
+#collection-search-container {
+  display: flex;
+  align-items: center;
+
+  mat-spinner {
+    margin-left: 10px;
+  }
+
+  mat-hint.warning {
+    font-size: 10px;
+    color: mat.get-color-from-palette($ansible-ee-wizard-primary, 500);
+  }
+}
+
+.top-p10 {
+  padding-top: 10px;
+}

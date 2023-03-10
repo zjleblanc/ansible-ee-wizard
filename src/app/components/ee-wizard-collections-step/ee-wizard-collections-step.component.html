@@ -1,0 +1,28 @@
+<form [formGroup]="collectionsFormGroup" class="top-p10">
+  <div id="collection-search-container">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Collection</mat-label>
+      <input
+        matInput
+        formControlName="collectionSearch"
+        type="text"
+        [matAutocomplete]="collectionAutoComplete"
+      >
+      <mat-autocomplete #collectionAutoComplete="matAutocomplete" (optionSelected)="onCollectionSelected($event)">
+        <mat-option *ngFor="let collection of collections" [value]="collection">
+          {{collection}}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-hint align="end" class="warning" *ngIf="!collections_loading && collection_query && collections.length == 0">No collections found</mat-hint>
+    </mat-form-field>
+    <mat-spinner [diameter]="20" *ngIf="collections_loading"></mat-spinner>
+  </div>
+</form>
+<app-version-form-group
+  *ngFor="let collectionGroup of selectedCollections.controls; let i = index"
+  [parentArray]="selectedCollections"
+  [versionIndex]="i"
+  [versionGroup]="collectionGroup"
+  [versionSource]="galaxy"
+  [operators]="galaxy_operators"
+></app-version-form-group>

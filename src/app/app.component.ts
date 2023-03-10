@@ -35,10 +35,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.collectionFormGroup = this._formBuilder.group({
-      collectionSearch: [],
-      collections: this._formBuilder.array([])
-    });
     this.bindepFormGroup = this._formBuilder.group({
       bindeps: this._formBuilder.array([])
     });
@@ -46,12 +42,6 @@ export class AppComponent implements OnInit {
       prepend: this._formBuilder.array([]),
       append: this._formBuilder.array([])
     });
-
-    this.collectionSearch$ = this.collectionFormGroup.get('collectionSearch')?.valueChanges.pipe(
-      debounceTime(500),
-      filter((query: string) => query.length > 0),
-      tap((query: string) => this.searchGalaxy(query))
-    ).subscribe();
   }
 
   get selectedPackages() {
@@ -61,12 +51,11 @@ export class AppComponent implements OnInit {
     return new FormArray<FormGroup>([]);
   }
 
-  get collectionSearch() {
-    return this.collectionFormGroup.get('collectionSearch') as FormControl;
-  }
-
   get selectedCollections() {
-    return this.collectionFormGroup.get('collections') as FormArray<FormGroup>;
+    if(this.collectionFormGroup.get('collections')) {
+      return this.collectionFormGroup.get('collections') as FormArray<FormGroup>;
+    }
+    return new FormArray<FormGroup>([]);
   }
 
   get bindeps() {
@@ -101,43 +90,5 @@ export class AppComponent implements OnInit {
     }
     let mod = idx % APPEND_EXAMPLES.length;
       return APPEND_EXAMPLES[mod];
-  }
-
-  onCollectionSelected(event: MatAutocompleteSelectedEvent) {
-    this.selectedCollections.push(this._formBuilder.group({
-      name: [event.option.value, Validators.required],
-      operator: [null],
-      version: [null]
-    }));
-
-    this.collectionSearch.setValue('');
-    this.collection_query = '';
-    this.collections = [];
-  }
-
-  private searchGalaxy(query: string) {
-    if(query == this.collection_query) {
-      return;
-    }
-
-    this.collections = [];
-    this.collections_loading = true;
-    this.collection_query = query;
-    this.galaxy.search(query)
-      .pipe(
-        map((resp: HttpResponse<string[]>) => {
-          return resp.body ?? []
-        })
-      ).subscribe({
-        next: (results: string[]) => {
-          this.collections = results;
-          this.collections_loading = false;
-        },
-        error: (err: any) => {
-          console.log(err);
-          this.collections = [];
-          this.collections_loading = false;
-        }
-      })
   }
 }
