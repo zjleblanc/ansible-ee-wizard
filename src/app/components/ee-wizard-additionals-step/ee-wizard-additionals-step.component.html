@@ -1,0 +1,47 @@
+<form [formGroup]="addStepsFormGroup" class="top-p10">
+  <div id="add-steps-container">
+    <div class="prepend-entry" *ngFor="let control of prependSteps.controls; let i = index">
+      <mat-form-field
+        color="accent"
+        appearance="outline"
+      >
+        <input matInput
+          [formControl]="control"
+          [placeholder]="getStepExample(i, 'prepend')"
+        >
+      </mat-form-field>
+      <div class="action-button-wrapper">
+        <button mat-icon-button
+          color="primary"
+          aria-label="Remove prepend step."
+          (click)="prependSteps.removeAt(i)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="onAddStep(prependSteps)">Prepend Step<mat-icon>add</mat-icon></button>
+    <hr style="width: 100%">
+    <div class="append-entry" *ngFor="let control of appendSteps.controls; let i = index">
+      <mat-form-field
+        color="accent"
+        appearance="outline"
+      >
+        <input matInput
+          [formControl]="control"
+          [placeholder]="getStepExample(i, 'append')"
+        >
+      </mat-form-field>
+      <div class="action-button-wrapper">
+        <button mat-icon-button
+          color="primary"
+          aria-label="Remove append step."
+          (click)="appendSteps.removeAt(i)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="onAddStep(appendSteps)">Append Step<mat-icon>add</mat-icon></button>
+  </div>
+</form>

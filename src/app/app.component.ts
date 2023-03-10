@@ -13,7 +13,7 @@ import { GalaxyService } from './services/galaxy/galaxy.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   basicsFormGroup: FormGroup = new FormGroup([]);
   addStepsFormGroup: FormGroup = new FormGroup([]);
   packageFormGroup: FormGroup = new FormGroup([]);
@@ -21,14 +21,6 @@ export class AppComponent implements OnInit {
   bindepFormArray: FormArray<FormControl> = new FormArray<FormControl>([]);
 
   constructor(private _formBuilder: FormBuilder) {}
-
-  ngOnInit() {
-    this.bindepFormArray = this._formBuilder.array([]);
-    this.addStepsFormGroup = this._formBuilder.group({
-      prepend: this._formBuilder.array([]),
-      append: this._formBuilder.array([])
-    });
-  }
 
   get selectedPackages() {
     if(this.packageFormGroup.get('packages')) {
@@ -45,23 +37,16 @@ export class AppComponent implements OnInit {
   }
 
   get prependSteps() {
-    return this.addStepsFormGroup.get('prepend') as FormArray<FormControl>;
+    if(this.addStepsFormGroup.get('prepend')) {
+      return this.addStepsFormGroup.get('prepend') as FormArray<FormControl>;
+    }
+    return new FormArray<FormControl>([]);
   }
 
   get appendSteps() {
-    return this.addStepsFormGroup.get('append') as FormArray<FormControl>;
-  }
-
-  onAddStep(arr: FormArray<FormControl>) {
-    arr.push(this._formBuilder.control(''));
-  }
-
-  getStepExample(idx: number, type: string) : string {
-    if(type == "prepend") {
-      let mod = idx % PREPEND_EXAMPLES.length;
-      return PREPEND_EXAMPLES[mod];
+    if(this.addStepsFormGroup.get('append')) {
+      return this.addStepsFormGroup.get('append') as FormArray<FormControl>;
     }
-    let mod = idx % APPEND_EXAMPLES.length;
-      return APPEND_EXAMPLES[mod];
+    return new FormArray<FormControl>([]);
   }
 }

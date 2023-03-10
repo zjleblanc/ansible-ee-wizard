@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./ee-wizard-basic-step.component.scss']
 })
 export class EEWizardBasicStepComponent implements OnInit {
-  @Input()   basicsFormGroup: FormGroup;
+  @Input() basicsFormGroup: FormGroup;
   @Output() basicsFormGroupChange = new EventEmitter<FormGroup>();
 
   constructor(private _formBuilder: FormBuilder) {}

@@ -5,7 +5,7 @@ export const PREPEND_EXAMPLES = [
 ];
 
 export const APPEND_EXAMPLES = [
-  "RUN echo Thanks ee-wizard!!",
+  "RUN echo \"Thanks ee-wizard !!\"",
   "RUN ls -la /etc",
   "RUN echo \"Happy $(date '+%A')!\""
 ];

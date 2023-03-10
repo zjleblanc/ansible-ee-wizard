@@ -30,6 +30,7 @@ import { EEWizardBasicStepComponent } from './components/ee-wizard-basic-step/ee
 import { EEWizardPackagesStepComponent } from './components/ee-wizard-packages-step/ee-wizard-packages-step.component';
 import { EEWizardCollectionsStepComponent } from './components/ee-wizard-collections-step/ee-wizard-collections-step.component';
 import { EEWizardBindepsStepComponent } from './components/ee-wizard-bindeps-step/ee-wizard-bindeps-step.component';
+import { EEWizardAddtionalsStepComponent } from './components/ee-wizard-additionals-step/ee-wizard-additionals-step.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { EEWizardBindepsStepComponent } from './components/ee-wizard-bindeps-ste
     EEWizardBasicStepComponent,
     EEWizardPackagesStepComponent,
     EEWizardCollectionsStepComponent,
-    EEWizardBindepsStepComponent
+    EEWizardBindepsStepComponent,
+    EEWizardAddtionalsStepComponent
   ],
   imports: [
     BrowserModule,
